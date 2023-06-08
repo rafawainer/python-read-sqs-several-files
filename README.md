@@ -1,8 +1,10 @@
 # python-read-sqs-several-files
 Python to use in AWS Lambda to receive an object through a message from AWS SQS, originally notified from an AWS S3 Bucket. Search and validate several files from root AWS S3 Bucket creating two outputfiles: Validated and Error files. 
 
-[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) 
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
 ![Amazon_Badge](https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
+
 ![PyCharm_Badge](https://img.shields.io/badge/PyCharm-000000.svg?&style=for-the-badge&logo=PyCharm&logoColor=white)
 
 
