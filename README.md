@@ -3,7 +3,7 @@ Python to use in AWS Lambda to receive an object through a message from AWS SQS,
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) 
 ![Amazon_Badge](https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
-[![PyCharm_Badge](https://img.shields.io/badge/PyCharm-000000.svg?&style=for-the-badge&logo=PyCharm&logoColor=white)
+![PyCharm_Badge](https://img.shields.io/badge/PyCharm-000000.svg?&style=for-the-badge&logo=PyCharm&logoColor=white)
 
 
 ![graphic_usage](https://github-readme-stats.vercel.app/api/top-langs/?username=rafawainer)
