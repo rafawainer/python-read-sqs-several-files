@@ -2,7 +2,7 @@ import json
 import os
 import boto3
 import time
-from datetime import datetime, timezone
+from datetime import datetime
 
 vLocalTimeZone = 'America/Sao_Paulo'
 
