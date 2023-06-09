@@ -1,0 +1,65 @@
+import os
+import csv
+import boto3
+
+s3_client = boto3.client('s3')
+
+def lambda_handler(event, context):
+    for record in event['Records']:
+        message_body = record['body']
+        file_name = message_body.strip()
+
+        # Extrair os 11 primeiros dígitos do nome do arquivo
+        prefix = file_name[:11]
+
+        # Localizar outros arquivos no mesmo bucket com o prefixo correspondente
+        response = s3_client.list_objects_v2(Bucket='<seu-bucket>', Prefix=prefix)
+
+        valid_rows = []
+        error_rows = []
+
+        if 'Contents' in response:
+            for file in response['Contents']:
+                file_key = file['Key']
+
+                # Ignorar o arquivo de controle original
+                if file_key != file_name:
+                    # Ler o conteúdo do arquivo
+                    response = s3_client.get_object(Bucket='<seu-bucket>', Key=file_key)
+                    content = response['Body'].read().decode('utf-8')
+
+                    # Separar os registros por vírgula e identificar o final de cada linha
+                    rows = content.split('\n')
+
+                    for row in rows:
+                        fields = row.split(',')
+
+                        # Validar se cada campo é numérico
+                        if all(field.isdigit() for field in fields):
+                            valid_rows.append(fields)
+                        else:
+                            error_rows.append(row)
+
+        # Gerar o arquivo de saída com os registros válidos
+        if valid_rows:
+            output_file_name = file_name.replace('CONTROLE.TXT', 'DIARIO.TXT')
+            output_file_path = os.path.join('/tmp', output_file_name)
+
+            with open(output_file_path, 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(['Campo1', 'Campo2', 'Campo3', 'Campo4', 'Campo5', 'Campo6', 'Campo7'])
+                writer.writerows(valid_rows)
+
+            # Enviar o arquivo para o S3 na pasta "validado/"
+            s3_client.upload_file(output_file_path, '<seu-bucket>', f'validado/{output_file_name}')
+
+        # Gerar o arquivo de erros
+        if error_rows:
+            error_file_name = file_name.replace('CONTROLE.TXT', 'ERROR.TXT')
+            error_file_path = os.path.join('/tmp', error_file_name)
+
+            with open(error_file_path, 'w', newline='') as error_file:
+                error_file.write('\n'.join(error_rows))
+
+            # Enviar o arquivo de erros para o S3
+            s3_client.upload_file(error_file_path, '<seu-bucket>', error_file_name)
